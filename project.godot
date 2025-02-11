@@ -1,0 +1,34 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="GDScript Utilities for Scenes and Classes"
+config/version="1.0.0"
+run/main_scene="res://addons/gdscript_utilities/examples/main_scene.tscn"
+config/features=PackedStringArray("4.3", "Forward Plus")
+config/icon="res://plugin_icon.svg"
+
+[autoload]
+
+GDScriptUtilities="*res://addons/gdscript_utilities/scripts/gdscript_utilities.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdscript_utilities/plugin.cfg")
+
+[global_group]
+
+Enemy="TTT"
+Evolution="YYYY"
+
+[plugins]
+
+gdscript_utilities/print_internal_messages=true

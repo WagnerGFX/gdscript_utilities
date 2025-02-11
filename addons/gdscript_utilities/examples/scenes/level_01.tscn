@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://f287bkl45gqb"]
+
+[ext_resource type="PackedScene" uid="uid://d2lf3vamn3n7c" path="res://addons/gdscript_utilities/examples/scenes/goblin.tscn" id="1_ktuj6"]
+[ext_resource type="PackedScene" uid="uid://b06r3yd0e54ep" path="res://addons/gdscript_utilities/examples/scenes/hobgoblin.tscn" id="2_3cgr7"]
+[ext_resource type="PackedScene" uid="uid://diy7xdy4ymeq4" path="res://addons/gdscript_utilities/examples/scenes/orc.tscn" id="3_2wlx1"]
+
+[node name="Level 01" type="Node2D"]
+
+[node name="Goblin" parent="." instance=ExtResource("1_ktuj6")]
+
+[node name="HobGoblin" parent="." instance=ExtResource("2_3cgr7")]
+
+[node name="Orc" parent="." instance=ExtResource("3_2wlx1")]

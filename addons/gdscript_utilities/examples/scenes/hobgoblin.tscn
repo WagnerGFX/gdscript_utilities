@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b06r3yd0e54ep"]
+
+[ext_resource type="PackedScene" uid="uid://d2lf3vamn3n7c" path="res://addons/gdscript_utilities/examples/scenes/goblin.tscn" id="1_bia5a"]
+
+[node name="HobGoblin" groups=["Evolution"] instance=ExtResource("1_bia5a")]
+position = Vector2(200, 100)
+health = 10
+attack = 5
+metadata/Tags = PackedStringArray("Enemy", "Damageable", "Magician", "TTY")

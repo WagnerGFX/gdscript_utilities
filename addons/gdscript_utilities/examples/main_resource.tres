@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="ScenePicker" load_steps=2 format=3 uid="uid://bkg4x1ilury1v"]
+
+[ext_resource type="Script" path="res://addons/gdscript_utilities/examples/scripts/main_resource.gd" id="1_rgs8r"]
+
+[resource]
+script = ExtResource("1_rgs8r")

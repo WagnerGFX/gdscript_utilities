@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2lf3vamn3n7c"]
+
+[ext_resource type="Script" path="res://addons/gdscript_utilities/examples/scripts/goblin.gd" id="2_86x2f"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_h7yih"]
+
+[node name="Goblin" type="Sprite2D" groups=["Enemy"]]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(100, 100)
+scale = Vector2(200, 200)
+texture = SubResource("CanvasTexture_h7yih")
+script = ExtResource("2_86x2f")
+health = 5
+attack = 6
+metadata/Tags = PackedStringArray("Enemy", "Damageable", "Magician")
