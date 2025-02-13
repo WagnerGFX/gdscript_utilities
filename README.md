@@ -19,12 +19,12 @@
 	Table of Contents
 </h1>
 
-<h3 align="center"><a href="#description">Description</a></h3>
-<h3 align="center"><a href="#features-overview">Features Overview</a></h3>
-<h3 align="center"><a href="#installation">Installation</a></h3>
-<h3 align="center"><a href="#configuration">Configuration</a></h3>
-<h3 align="center"><a href="#limitations-and-known-issues">Limitations and Known Issues</a></h3>
-<h3 align="center"><a href="#user-contributions">User Contributions</a></h3>
+<h3 align="center"><a href="#description-1">Description</a></h3>
+<h3 align="center"><a href="#features-overview-1">Features Overview</a></h3>
+<h3 align="center"><a href="#installation-1">Installation</a></h3>
+<h3 align="center"><a href="#configuration-1">Configuration</a></h3>
+<h3 align="center"><a href="#limitations-and-known-issues-1">Limitations and Known Issues</a></h3>
+<h3 align="center"><a href="#user-contributions-1">User Contributions</a></h3>
 
 ## Description
 This plugin creates workarounds for two limitations of the Godot Engine related to for the following proposals:
