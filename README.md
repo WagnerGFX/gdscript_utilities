@@ -91,7 +91,7 @@ It does not need to be saved, but it should be included in your project build.
 
 ## Installation
 The plugin can be downloaded from:
-- The Godot Asset Library. It can be installed directly from inside the engine using the AssetLib tab.
+- The [Godot Asset Library](https://godotengine.org/asset-library/asset). It can be installed directly from inside the engine using the ***AssetLib*** tab.
 - The Releases section of this repository.
 - The source code directly. Just import it into your project.
 
