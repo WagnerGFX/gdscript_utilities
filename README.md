@@ -42,14 +42,15 @@ This plugin contains simple functions to find the class name using a class refer
 
 It also has easy ways to compare classes, compare inheritance and differentiate between native classes and user created scripts.
 
-But why this is useful, you ask? With these functions it's easier to create:
+But why this is useful, you ask? With these functions, it's easier to create:
 - More descriptive debug functions.
 - Plugins that can dynamically instantiate and validate nodes.
 - Games with procedural features.
 
 ### PackedScene data readability and validation
-PackedScene files represent one of the most flexible points of Godot, but when adding a scene reference to a node property in the inspector there is no way to pre-validate their data and post-validating requires a good amount of code.
-</br>With no validation, designers can easily put a UI scene to spawn on the place of an expected 3D enemy, resulting in a nightmare for everyone, specially as the project gets bigger.
+PackedScene files represent one of the most flexible points of Godot, but when adding a scene reference to a node property in the inspector, there is no way to pre-validate their data and post-validating requires a good amount of code.
+
+With no validation, designers can easily put a UI scene to spawn on the place of an expected 3D enemy, resulting in a nightmare for everyone, specially as the project gets bigger.
 
 Although it's not too hard to get data from simple scene files, that data is not as easy to read and inherited scenes makes the process much more complicated.
 
@@ -146,7 +147,7 @@ If you need those values, I recommend using resource files to save scene propert
 ## User Contributions
 > ⚠ This is not a project created with the intention of being maintained with frequent updates and new features.
 
-I still plan on keeping it compatible with future engine verisons as long as its features don't become obsolete.
+I still plan on keeping it compatible with future engine versions as long as its features don't become obsolete.
 
 You are free to open new issues/PRs for bug fixes or features, but be aware that I might take a long time to reply and may deny them if they diverge too wildly from the intended scope.
 
