@@ -92,6 +92,12 @@ static func get_type_name(obj) -> String:
 	elif obj is Object:
 		class_type_name = obj.get_class()
 		
+	elif typeof(obj) == TYPE_ARRAY:
+		class_type_name = VariantUtils._get_typed_array_name(obj)
+	
+	elif typeof(obj) == TYPE_DICTIONARY:
+		class_type_name = VariantUtils._get_typed_dictionary_name(obj)
+	
 	else:
 		class_type_name = type_string(typeof(obj))
 	

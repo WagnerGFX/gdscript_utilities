@@ -37,6 +37,18 @@ static func is_dictionary(obj) -> bool:
 	return typeof(obj) == TYPE_DICTIONARY
 
 
+## Checks if a given value is a builtin variant of any type, except TYPE_OBJECT.
+## Can optionally allow null values.
+static func is_builtin(value, allow_null = false) -> bool:
+	if typeof(value) == TYPE_OBJECT:
+		return false
+	
+	if(typeof(value) == TYPE_NIL and not allow_null):
+		return false
+	else:
+		return true
+
+
 static func _compare_value_only(data_item, compare_item) -> bool:
 	var is_data_value_type_pair = is_dictionary(data_item) \
 			and data_item.size() == 2 \
@@ -119,3 +131,59 @@ static func _collection_contains(data_collection, compare_collection) -> bool:
 				break
 			
 	return is_valid
+
+
+# Used internally by ClassUtils.get_type_name
+static func _get_typed_array_name(value : Array) -> String:
+	var array_name := type_string(typeof(value))
+	
+	# Not a typed Array
+	if not value.is_typed():
+		return array_name
+	
+	var typed_array_name := ""
+	if is_builtin(value.get_typed_builtin()):
+		typed_array_name = type_string(value.get_typed_builtin())
+	elif value.get_typed_script() != null:
+		typed_array_name = ClassUtils.get_type_name(value.get_typed_script())
+	else:
+		typed_array_name = value.get_typed_class_name()
+	
+	return  "%s[%s]" % [array_name, typed_array_name]
+
+
+# Used internally by ClassUtils.get_type_name
+static func _get_typed_dictionary_name(value) -> String:
+	var dictionary_name := type_string(typeof(value))
+	
+	# Before Godot v4.4
+	if GDScriptUtilities.is_engine_version_older(4,4):
+		return dictionary_name
+	
+	# Not a typed Dictionary
+	if not value.is_typed():
+		return dictionary_name
+	
+	# Key
+	var dictionary_key_type_name := ""
+	if not value.is_typed_key():
+		dictionary_key_type_name = "any"
+	elif is_builtin(value.get_typed_key_builtin()):
+		dictionary_key_type_name = type_string(value.get_typed_key_builtin())
+	elif value.get_typed_key_script() != null:
+		dictionary_key_type_name = ClassUtils.get_type_name(value.get_typed_key_script())
+	else:
+		dictionary_key_type_name = value.get_typed_key_class_name()
+	
+	# Value
+	var dictionary_value_type_name := ""
+	if not value.is_typed_value():
+		dictionary_value_type_name = "any"
+	elif is_builtin(value.get_typed_value_builtin()):
+		dictionary_value_type_name = type_string(value.get_typed_value_builtin())
+	elif value.get_typed_value_script() != null:
+		dictionary_value_type_name = ClassUtils.get_type_name(value.get_typed_value_script())
+	else:
+		dictionary_value_type_name = value.get_typed_value_class_name()
+	
+	return "%s[%s,%s]" % [dictionary_name, dictionary_key_type_name, dictionary_value_type_name]
