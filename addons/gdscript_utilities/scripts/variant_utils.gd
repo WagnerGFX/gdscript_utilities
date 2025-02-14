@@ -1,6 +1,6 @@
 @tool
 class_name VariantUtils
-## This class provides utility functions for types of variables.
+## This class provides utility functions for variables that use the built-in types.
 
 
 static var _array_types : Array[int] = [
@@ -22,19 +22,19 @@ static func _static_init():
 		_array_types.append(38) # TYPE_PACKED_VECTOR4_ARRAY
 
 
-## Checks if a given object is a type of array.
-static func is_any_array(obj) -> bool:
-	return _array_types.has(typeof(obj))
+## Checks if a given value is a type of array.
+static func is_any_array(value) -> bool:
+	return _array_types.has(typeof(value))
 
 
-## Checks if a given object is an array or dictionary.
-static func is_collection(obj) -> bool:
-	return is_dictionary(obj) or is_any_array(obj)
+## Checks if a given value is an array or dictionary.
+static func is_collection(value) -> bool:
+	return is_dictionary(value) or is_any_array(value)
 
 
-## Checks if a given object is a dictionary.
-static func is_dictionary(obj) -> bool:
-	return typeof(obj) == TYPE_DICTIONARY
+## Checks if a given value is a dictionary.
+static func is_dictionary(value) -> bool:
+	return typeof(value) == TYPE_DICTIONARY
 
 
 ## Checks if a given value is a builtin variant of any type, except TYPE_OBJECT.
