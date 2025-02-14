@@ -18,9 +18,8 @@ static var _array_types : Array[int] = [
 
 
 static func _static_init():
-	if TYPE_MAX > 38:
-		# TYPE_PACKED_VECTOR4_ARRAY added in Godot 4.3
-		_array_types.append(38)
+	if GDScriptUtilities.is_engine_version_equal_or_newer(4,3):
+		_array_types.append(38) # TYPE_PACKED_VECTOR4_ARRAY
 
 
 ## Checks if a given object is a type of array.

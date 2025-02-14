@@ -75,7 +75,7 @@ static func get_type_name(obj) -> String:
 		obj = obj.get_script()
 	
 	if obj is GDScript:
-		if obj.has_method("get_global_name"): # Godot v4.3+
+		if GDScriptUtilities.is_engine_version_equal_or_newer(4,3):
 			class_type_name = obj.get_global_name()
 		else:
 			for inner_script in ProjectSettings.get_global_class_list():
