@@ -183,7 +183,7 @@ static func get_properties_and_values(scene: PackedScene, node_idx: int = 0) -> 
 	
 	for property_key in scene_properties:
 		var item_type
-		if VariantUtils.is_dictionary(scene_properties[property_key]):
+		if VariantUtils.is_value_dictionary(scene_properties[property_key]):
 			item_type = scene_properties[property_key][KEY_TYPE]
 		else:
 			item_type = scene_properties[property_key]

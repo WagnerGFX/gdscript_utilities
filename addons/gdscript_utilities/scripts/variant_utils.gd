@@ -22,40 +22,59 @@ static func _static_init():
 		_array_types.append(38) # TYPE_PACKED_VECTOR4_ARRAY
 
 
-## Checks if a given value is a type of array.
-static func is_any_array(value) -> bool:
-	return _array_types.has(typeof(value))
+## Checks if a given type ID represents any built-in type except TYPE_OBJECT.
+## Can receive other type IDs to exclude.
+static func is_type_builtin(type_id, exclusions : Array[int] = []) -> bool:
+	if type_id == TYPE_OBJECT:
+		return false
+	
+	return not exclusions.has(type_id)
+
+
+## Checks if a given type ID represents any of the available built-in array types.
+static func is_type_any_array(type_id) -> bool:
+	return _array_types.has(type_id)
+
+
+## Checks if a given type ID represents an array or dictionary.
+static func is_type_collection(type_id) -> bool:
+	return is_type_dictionary(type_id) or is_type_any_array(type_id)
+
+
+## Checks if a given type ID represents a dictionary.
+static func is_type_dictionary(type_id) -> bool:
+	return type_id == TYPE_DICTIONARY
+
+
+## Checks if a given value is any of the available built-in array types.
+static func is_value_any_array(value) -> bool:
+	return is_type_any_array(typeof(value))
+
+
+## Checks if a given value is of any built-in type except TYPE_OBJECT.
+## Can receive other type IDs to exclude.
+static func is_value_builtin(value, exclusions : Array[int] = []) -> bool:
+	return is_type_builtin(typeof(value), exclusions)
 
 
 ## Checks if a given value is an array or dictionary.
-static func is_collection(value) -> bool:
-	return is_dictionary(value) or is_any_array(value)
+static func is_value_collection(value) -> bool:
+	return is_type_dictionary(typeof(value)) or is_type_any_array(typeof(value))
 
 
 ## Checks if a given value is a dictionary.
-static func is_dictionary(value) -> bool:
-	return typeof(value) == TYPE_DICTIONARY
-
-
-## Checks if a given value is a builtin variant of any type, except TYPE_OBJECT.
-## Can optionally allow null values.
-static func is_builtin(value, allow_null = false) -> bool:
-	if typeof(value) == TYPE_OBJECT:
-		return false
-	
-	if(typeof(value) == TYPE_NIL and not allow_null):
-		return false
-	else:
-		return true
+static func is_value_dictionary(value) -> bool:
+	return is_type_dictionary(typeof(value))
+## Checks if a given value is a built-in variant of any type except TYPE_OBJECT.
 
 
 static func _compare_value_only(data_item, compare_item) -> bool:
-	var is_data_value_type_pair = is_dictionary(data_item) \
+	var is_data_value_type_pair = is_value_dictionary(data_item) \
 			and data_item.size() == 2 \
 			and data_item.has(PackedSceneUtils.KEY_VALUE) \
 			and data_item.has(PackedSceneUtils.KEY_TYPE)
 	
-	var is_compare_value_type_pair = is_dictionary(compare_item) \
+	var is_compare_value_type_pair = is_value_dictionary(compare_item) \
 			and compare_item.size() == 2 \
 			and compare_item.has(PackedSceneUtils.KEY_VALUE) \
 			and compare_item.has(PackedSceneUtils.KEY_TYPE)
@@ -80,7 +99,7 @@ static func _collection_contains(data_collection, compare_collection) -> bool:
 	var is_valid := false
 	
 	# compare array values
-	if is_any_array(data_collection) and is_any_array(compare_collection):
+	if is_value_any_array(data_collection) and is_value_any_array(compare_collection):
 		for compare_item in compare_collection:
 			var has_valid_data := false
 			
@@ -92,7 +111,7 @@ static func _collection_contains(data_collection, compare_collection) -> bool:
 				else:
 					data_value = data_item
 					
-				if is_collection(data_value) and is_collection(compare_item):
+				if is_value_collection(data_value) and is_value_collection(compare_item):
 					has_valid_data = _collection_contains(data_value, compare_item)
 				elif typeof(data_value) == typeof(compare_item):
 					has_valid_data = (data_value == compare_item)
@@ -106,7 +125,7 @@ static func _collection_contains(data_collection, compare_collection) -> bool:
 				break
 	
 	# compare dictionary key-value pair
-	elif is_dictionary(data_collection) and is_dictionary(compare_collection):
+	elif is_value_dictionary(data_collection) and is_value_dictionary(compare_collection):
 		for compare_key in compare_collection:
 			var compare_item = compare_collection[compare_key]
 			
@@ -119,7 +138,7 @@ static func _collection_contains(data_collection, compare_collection) -> bool:
 				else:
 					data_value = data_item
 				
-				if is_collection(data_value) and is_collection(compare_item):
+				if is_value_collection(data_value) and is_value_collection(compare_item):
 					is_valid = _collection_contains(data_value, compare_item)
 					
 				elif typeof(data_value) == typeof(compare_item):
@@ -142,7 +161,7 @@ static func _get_typed_array_name(value : Array) -> String:
 		return array_name
 	
 	var typed_array_name := ""
-	if is_builtin(value.get_typed_builtin()):
+	if is_type_builtin(value.get_typed_builtin()):
 		typed_array_name = type_string(value.get_typed_builtin())
 	elif value.get_typed_script() != null:
 		typed_array_name = ClassUtils.get_type_name(value.get_typed_script())
@@ -168,7 +187,7 @@ static func _get_typed_dictionary_name(value) -> String:
 	var dictionary_key_type_name := ""
 	if not value.is_typed_key():
 		dictionary_key_type_name = "any"
-	elif is_builtin(value.get_typed_key_builtin()):
+	elif is_type_builtin(value.get_typed_key_builtin()):
 		dictionary_key_type_name = type_string(value.get_typed_key_builtin())
 	elif value.get_typed_key_script() != null:
 		dictionary_key_type_name = ClassUtils.get_type_name(value.get_typed_key_script())
@@ -179,7 +198,7 @@ static func _get_typed_dictionary_name(value) -> String:
 	var dictionary_value_type_name := ""
 	if not value.is_typed_value():
 		dictionary_value_type_name = "any"
-	elif is_builtin(value.get_typed_value_builtin()):
+	elif is_type_builtin(value.get_typed_value_builtin()):
 		dictionary_value_type_name = type_string(value.get_typed_value_builtin())
 	elif value.get_typed_value_script() != null:
 		dictionary_value_type_name = ClassUtils.get_type_name(value.get_typed_value_script())

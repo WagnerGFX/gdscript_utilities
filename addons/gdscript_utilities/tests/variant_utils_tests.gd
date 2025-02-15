@@ -13,12 +13,12 @@ func run_tests():
 
 
 func assert_is_collection():
-	const assertion_item := "VariantUtils.is_collection()"
+	const assertion_item := "VariantUtils.is_collection() ## value and type"
 	
 	var assert_collection = func(test_item, is_array: bool, is_dictionary: bool, is_collection: bool):
-		assert(VariantUtils.is_any_array(test_item) == is_array, assertion_item)
-		assert(VariantUtils.is_dictionary(test_item) == is_dictionary, assertion_item)
-		assert(VariantUtils.is_collection(test_item) == is_collection, assertion_item)
+		assert(VariantUtils.is_value_any_array(test_item) == is_array, assertion_item)
+		assert(VariantUtils.is_value_dictionary(test_item) == is_dictionary, assertion_item)
+		assert(VariantUtils.is_value_collection(test_item) == is_collection, assertion_item)
 	
 	var test
 	

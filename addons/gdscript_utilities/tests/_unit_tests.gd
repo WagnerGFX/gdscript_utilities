@@ -67,10 +67,10 @@ func screenshot_samples():
 	ClassUtils.get_inheritance_list(Goblin).has("Node") == true
 	
 	# Easily check for an array, regardless of type
-	VariantUtils.is_any_array(my_packed_array) == true
+	VariantUtils.is_value_any_array(my_packed_array) == true
 	
 	# Check for a collection, be it and array or dictionary
-	VariantUtils.is_collection(maybe_a_dictionary) == true
+	VariantUtils.is_value_collection(maybe_a_dictionary) == true
 	
 	# Easly find information from nodes inside a scene file
 	PackedSceneUtils.get_node_name(GOBLIN_SCENE) == "Goblin"
