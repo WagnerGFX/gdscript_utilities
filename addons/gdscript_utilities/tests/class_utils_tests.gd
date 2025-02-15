@@ -73,7 +73,7 @@ func assert_is_script():
 	
 	assert(ClassUtils.is_script(Goblin), assertion_item)
 	assert(ClassUtils.is_script(MainScene), assertion_item)
-	assert(ClassUtils.is_script(Foo), assertion_item)
+	assert(ClassUtils.is_script(TestObj.Foo), assertion_item)
 	assert(not ClassUtils.is_script(Node), assertion_item)
 	assert(not ClassUtils.is_script(Resource), assertion_item)
 	assert(not ClassUtils.is_script(Object), assertion_item)
@@ -135,8 +135,8 @@ func assert_get_type_name():
 	assert(ClassUtils.get_type_name(MainScene) == "MainScene")
 	assert(ClassUtils.get_type_name(GDScriptUtilities._plugin_cache) == "Resource", assertion_item)
 	assert(ClassUtils.get_type_name(get_tree()) == "SceneTree", assertion_item)
-	assert(ClassUtils.get_type_name(Foo) == "GDScript", assertion_item)
-	assert(ClassUtils.get_type_name(Foo.new()) == "RefCounted", assertion_item)
+	assert(ClassUtils.get_type_name(TestObj.Foo) == "GDScript", assertion_item)
+	assert(ClassUtils.get_type_name(TestObj.Foo.new()) == "RefCounted", assertion_item)
 	
 	UnitTests.print_assertion_passed(assertion_item)
 
@@ -171,7 +171,3 @@ func assert_get_type():
 	assert(ClassUtils.get_type("MainScene") == MainScene, assertion_item)
 	
 	UnitTests.print_assertion_passed(assertion_item)
-
-
-class Foo:
-	pass
