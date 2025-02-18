@@ -18,7 +18,7 @@ static var _array_types : Array[int] = [
 
 
 static func _static_init():
-	if GDScriptUtilities.is_engine_version_equal_or_newer(4,3):
+	if TYPE_MAX > 38: # v4.3+
 		_array_types.append(38) # TYPE_PACKED_VECTOR4_ARRAY
 
 
