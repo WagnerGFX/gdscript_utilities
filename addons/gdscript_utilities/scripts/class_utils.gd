@@ -7,7 +7,10 @@ class_name ClassUtils
 ## they will probably show as a basic type, like [RefCounted] or [GDScript].
 ## [br]Only Native Classes exposed to GDScript are supported.
 
-const _SCRIPT_BODY := "static func eval(): return %s"
+const _SCRIPT_BODY := "static func eval():
+	var class_type = %s
+	var _class_object : %s
+	return class_type"
 
 static var _script : GDScript = GDScript.new()
 
@@ -114,8 +117,10 @@ static func get_type(classname: String) -> Object:
 			if inner_script["class"] == classname:
 				result = load(inner_script["path"])
 				break
-		
-	elif ClassDB.class_exists(classname) and ClassDB.is_class_enabled(classname):
+	
+	elif ClassDB.class_exists(classname) \
+			and ClassDB.is_class_enabled(classname) \
+			and not GDScriptUtilities.native_classes_invalid.has(classname):
 		result = get_type_unsafe(classname)
 	
 	return result
@@ -123,7 +128,7 @@ static func get_type(classname: String) -> Object:
 
 ## Used by [method get_type] and core plugin features. Executes with minimal validation.
 static func get_type_unsafe(classname: String) -> Object:
-	_script.set_source_code(_SCRIPT_BODY % classname)
+	_script.set_source_code(_SCRIPT_BODY % [classname, classname])
 	var error := _script.reload()
 	var result : Object
 	

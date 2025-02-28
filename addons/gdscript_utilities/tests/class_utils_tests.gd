@@ -162,6 +162,7 @@ func assert_get_type():
 	
 	assert(not ClassUtils.get_type(""), assertion_item)
 	assert(not ClassUtils.get_type("InvalidType"), assertion_item)
+	assert(not ClassUtils.get_type("GDScriptNativeClass"), assertion_item)
 	
 	assert(ClassUtils.get_type("Object") == Object, assertion_item)
 	assert(ClassUtils.get_type("RefCounted") == RefCounted, assertion_item)
