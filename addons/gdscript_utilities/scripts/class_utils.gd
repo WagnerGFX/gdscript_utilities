@@ -7,10 +7,12 @@ class_name ClassUtils
 ## they will probably show as a basic type, like [RefCounted] or [GDScript].
 ## [br]Only Native Classes exposed to GDScript are supported.
 
-const _SCRIPT_BODY := "static func eval():
+const _SCRIPT_BODY_EDITOR := "static func eval():
 	var class_type = %s
 	var _class_object : %s
 	return class_type"
+
+const _SCRIPT_BODY_RUNTIME := "static func eval(): return %s"
 
 static var _script : GDScript = GDScript.new()
 
@@ -128,7 +130,11 @@ static func get_type(classname: String) -> Object:
 
 ## Used by [method get_type] and core plugin features. Executes with minimal validation.
 static func get_type_unsafe(classname: String) -> Object:
-	_script.set_source_code(_SCRIPT_BODY % [classname, classname])
+	if Engine.is_editor_hint():
+		_script.set_source_code(_SCRIPT_BODY_EDITOR % [classname, classname])
+	else:
+		_script.set_source_code(_SCRIPT_BODY_RUNTIME % [classname])
+	
 	var error := _script.reload()
 	var result : Object
 	
