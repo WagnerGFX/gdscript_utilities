@@ -13,7 +13,7 @@ config_version=5
 config/name="GDScript Utilities for Scenes and Classes"
 config/version="1.0.0"
 run/main_scene="res://addons/gdscript_utilities/examples/main_scene.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://plugin_icon.svg"
 
 [autoload]

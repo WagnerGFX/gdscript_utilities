@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d2lf3vamn3n7c"]
 
-[ext_resource type="Script" path="res://addons/gdscript_utilities/examples/scripts/goblin.gd" id="2_86x2f"]
+[ext_resource type="Script" uid="uid://grt3vdkp7ere" path="res://addons/gdscript_utilities/examples/scripts/goblin.gd" id="2_86x2f"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_h7yih"]
 
