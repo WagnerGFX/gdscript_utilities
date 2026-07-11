@@ -6,3 +6,6 @@ addons/gdscript-interfaces/
 
 # Cache file
 addons/gdscript_utilities/plugin_cache.tres
+
+# Export folder
+.export/
