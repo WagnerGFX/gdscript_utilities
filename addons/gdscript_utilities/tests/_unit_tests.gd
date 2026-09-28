@@ -11,6 +11,7 @@ func _ready():
 	add_sibling(ClassUtilsTests.new())
 	add_sibling(VariantUtilsTests.new())
 	add_sibling(PackedSceneUtilsTests.new())
+	add_sibling(GDScriptUtilsTests.new())
 	queue_free()
 
 
