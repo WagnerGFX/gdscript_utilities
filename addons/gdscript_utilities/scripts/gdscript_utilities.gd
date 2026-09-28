@@ -121,14 +121,36 @@ func _set_native_classes_invalid(invalid_classes: Array):
 
 ## Return true if the current engine version is equal or newer compared to the values provided
 func is_engine_version_equal_or_newer(major:int, minor:int = 0, patch:int = 0) -> bool:
-	var engine_ver : Dictionary = Engine.get_version_info()
-	return engine_ver.major >= major and engine_ver.minor >= minor and engine_ver.patch >= patch
+	var result = compare_to_engine_version(major, minor, patch)
+	return result >= 0
 
 
 ## Return true if the current engine version is older compared to the values provided
 func is_engine_version_older(major:int, minor:int = 0, patch:int = 0) -> bool:
-	return not is_engine_version_equal_or_newer(major, minor, patch)
+	var result = compare_to_engine_version(major, minor, patch)
+	return result < 0
 
+## Compares the current engine version with a provided version.
+## [br]Returns 1 when engine is newer, 0 when equal, -1 when older.
+func compare_to_engine_version(major: int, minor: int = 0, patch: int = 0) -> int:
+	var current_version:Dictionary = Engine.get_version_info()
+	var comparand:Array[int] = [current_version.major, current_version.minor, current_version.patch]
+	var reference:Array[int] = [major, minor, patch]
+	
+	return compare_version_numbers(comparand, reference)
+
+## Compare two versions that are based on the Sematinc Versioning system. Numbers only.
+func compare_version_numbers(comparand: Array[int], reference:Array[int]) -> int:
+	while comparand.size() < reference.size():
+		comparand.append(0)
+
+	while comparand.size() > reference.size():
+		reference.append(0)
+	
+	var is_newer:int = signi(comparand > reference)
+	var is_older:int = signi(comparand < reference)
+	
+	return is_newer - is_older
 
 static func reload_cache(force_full_reload: bool):
 	GDScriptUtilities._load_native_class_cache(force_full_reload)
