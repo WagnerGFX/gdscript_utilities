@@ -19,6 +19,10 @@ const PATH_PLUGIN_EDITOR := PATH_PLUGIN_DIRECTORY +"/gdscript_utilities_plugin.g
 const PATH_PLUGIN_CACHE_FILE := PATH_PLUGIN_DIRECTORY + "/plugin_cache.tres"
 const PATH_SETTINGS_PRINT_INTERNAL_MSG := PATH_PLUGIN_SETTINGS + "/print_internal_messages"
 
+# Invalid Classes that only exist during runtime
+const RUNTIME_INVALID_CLASSES : Array[String] = [
+	"RuntimeNodeSelect",
+	]
 
 ## Check if log messages are allowed inside this plugin.
 ## [br]Change in the Project Settings > Plugins > [Plugin Name]
@@ -71,13 +75,14 @@ func _load_default_value_cache():
 
 # Load a dictionary of all available native class types. Will spam parse errors.
 func _load_native_class_cache(reload: bool = false):
-	var native_classes_error : Array
+	var native_classes_error : Array[String]
 	var errors_count : int = 0
 	
 	reload = reload or is_class_cache_version_current
 	
 	if reload:
 		_native_classes.clear()
+		native_classes_error += RUNTIME_INVALID_CLASSES
 	else:
 		native_classes_error = native_classes_invalid
 		errors_count = native_classes_error.size()
