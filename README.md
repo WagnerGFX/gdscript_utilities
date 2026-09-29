@@ -119,6 +119,15 @@ This is expected as many classes in `ClassDB` are not accessible to GDScript. Th
 
 I have not found any way to suppress those errors.
 
+### Errors only during Runtime
+Example: `Parser Error: Identifier "RuntimeNodeSelect" not declared in the current scope.`
+
+These classes are exclusive to the Runtime and are impossible to be detected when building the cache inside the Editor.
+
+The only solution, for now, is to hold a constant array with these classes or add the class name to the cache manually.
+
+You can use the constant `RUNTIME_INVALID_CLASSES` available in `gdscript_utilities.gd`.
+
 ### Unexpected parse errors in Godot v4.2
 ***Reason:*** [Plugin: script parse errors after removing folder .godot](https://github.com/godotengine/godot/issues/83457) fixed in v4.3+
 
