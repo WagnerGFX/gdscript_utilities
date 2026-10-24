@@ -1,0 +1,29 @@
+name: Sync README to the addons folder
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy README
+        run: cp README.md addons/gdscript_utilities/README.md
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add addons/gdscript_utilities/README.md
+          git diff --cached --quiet || git commit -m "chore: sync README to the addons folder"
+          git push
