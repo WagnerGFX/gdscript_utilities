@@ -15,7 +15,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Copy README
         run: cp README.md addons/gdscript_utilities/README.md
