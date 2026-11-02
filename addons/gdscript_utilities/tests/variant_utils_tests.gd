@@ -13,6 +13,7 @@ func run_tests():
 	assert_collection_contains()
 	assert_get_typed_array_name()
 	assert_get_typed_dictionary_name()
+	assert_type_consts()
 
 
 func assert_is_builtin():
@@ -232,5 +233,12 @@ func assert_get_typed_dictionary_name():
 		assert_typed_dictionary.call(ClassUtils.get_type_name(GDScript), ClassUtils.get_type_name(Character))
 		assert_typed_dictionary.call(ClassUtils.get_type_name(Character), ClassUtils.get_type_name(Goblin))
 		assert_typed_dictionary.call(ClassUtils.get_type_name(Goblin), ClassUtils.get_type_name(Orc))
+	
+	UnitTests.print_assertion_passed(assertion_item)
+
+func assert_type_consts():
+	const assertion_item := "VariantUtils._array_types"
+	
+	assert(TYPE_MAX == 39, "Variant Type changes detected.")
 	
 	UnitTests.print_assertion_passed(assertion_item)
