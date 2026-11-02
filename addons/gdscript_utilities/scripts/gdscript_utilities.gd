@@ -8,8 +8,6 @@ extends Node
 
 const NAME_AUTOLOAD := "GDScriptUtilities"
 const NAME_MENU_RELOADCACHE := "Reload GDScript Utilities Cache"
-const NAME_CACHE_GDVERSION := "GDVersion"
-const NAME_CACHE_INVALIDCLASSES := "InvalidClasses"
 const NAME_CACHE_DEFAULT_VALUE := "DefaultValue"
 
 const PATH_PLUGIN_DIRECTORY := "res://addons/gdscript_utilities"
@@ -19,10 +17,6 @@ const PATH_PLUGIN_EDITOR := PATH_PLUGIN_DIRECTORY +"/gdscript_utilities_plugin.g
 const PATH_PLUGIN_CACHE_FILE := PATH_PLUGIN_DIRECTORY + "/plugin_cache.tres"
 const PATH_SETTINGS_PRINT_INTERNAL_MSG := PATH_PLUGIN_SETTINGS + "/print_internal_messages"
 
-# Invalid Classes that only exist during runtime
-const RUNTIME_INVALID_CLASSES : Array[String] = [
-	"RuntimeNodeSelect",
-	]
 
 ## Check if log messages are allowed inside this plugin.
 ## [br]Change in the Project Settings > Plugins > [Plugin Name]
@@ -37,25 +31,12 @@ var default_value : DefaultValue:
 		return _plugin_cache.get_meta(NAME_CACHE_DEFAULT_VALUE)
 
 
-## Checks if the native classes were cached in the same version that the engine is currently running.
-var is_class_cache_version_current : bool:
-	get:
-		var cached_version : String = _plugin_cache.get_meta(NAME_CACHE_GDVERSION, "")
-		return cached_version != Engine.get_version_info().string
-
-
 var _native_classes : Dictionary
 ## A dictionary containing a cache of the engine's valid native classes.
 ## [br]Key = instance_id  | Value = class name
 var native_classes : Dictionary:
 	get:
 		return _native_classes
-
-
-## A list containing a cache of the engine's native class names that are not accessible through GDScript.
-var native_classes_invalid : Array:
-	get:
-		return _plugin_cache.get_meta(NAME_CACHE_INVALIDCLASSES, [])
 
 
 var _plugin_cache : Resource
@@ -73,38 +54,29 @@ func _load_default_value_cache():
 		ResourceSaver.save(_plugin_cache)
 
 
-# Load a dictionary of all available native class types. Will spam parse errors.
-func _load_native_class_cache(reload: bool = false):
-	var native_classes_error : Array[String]
-	var errors_count : int = 0
-	
-	reload = reload or is_class_cache_version_current
-	
-	if reload:
-		_native_classes.clear()
-		native_classes_error += RUNTIME_INVALID_CLASSES
-	else:
-		native_classes_error = native_classes_invalid
-		errors_count = native_classes_error.size()
+# Load a dictionary of all available native class types.
+func _load_native_class_cache():
+	var internal_classes_count : int = 0
+	var disabled_classes_count : int = 0
+
+	_native_classes.clear()
 	
 	for native_class_name in ClassDB.get_class_list():
-		var do_search := reload \
-				or (not _native_classes.has(native_class_name) \
-				and not native_classes_error.has(native_class_name))
+		if not ClassDB.is_class_enabled(native_class_name):
+			disabled_classes_count += 1
+			continue
 		
-		if do_search:
-			var native_class_obj := ClassUtils.get_type_unsafe(native_class_name)
-			
-			if native_class_obj:
-				_native_classes[native_class_obj.get_instance_id()] = native_class_name
-			else:
-				native_classes_error.append(native_class_name)
-	
-	if reload or errors_count < native_classes_error.size():
-		_set_native_classes_invalid(native_classes_error)
+		if not ClassDB.is_class_exposed(native_class_name):
+			internal_classes_count += 1
+			continue
+		
+		var native_class_obj := ClassUtils.get_type_unsafe(native_class_name)
+		
+		if native_class_obj:
+			_native_classes[native_class_obj.get_instance_id()] = native_class_name
 	
 	if can_print_internal_messages:
-		print("Loaded ClassDB references [Accessible:%s, Inaccessible:%s]" % [_native_classes.size(), native_classes_error.size()])
+		print("Loaded ClassDB references [Exposed:%s, Internal:%s, Disabled:%s]" % [_native_classes.size(), internal_classes_count, disabled_classes_count])
 
 
 func _load_plugin_cache():
@@ -116,12 +88,6 @@ func _load_plugin_cache():
 			plugin_editor.refresh_filesystem(PATH_PLUGIN_CACHE_FILE)
 	
 	_plugin_cache = load(PATH_PLUGIN_CACHE_FILE)
-
-
-func _set_native_classes_invalid(invalid_classes: Array):
-		_plugin_cache.set_meta(NAME_CACHE_GDVERSION, Engine.get_version_info().string)
-		_plugin_cache.set_meta(NAME_CACHE_INVALIDCLASSES, invalid_classes)
-		ResourceSaver.save(_plugin_cache)
 
 
 ## Return true if the current engine version is equal or newer compared to the values provided
@@ -157,5 +123,5 @@ func compare_version_numbers(comparand: Array[int], reference:Array[int]) -> int
 	
 	return is_newer - is_older
 
-static func reload_cache(force_full_reload: bool):
-	GDScriptUtilities._load_native_class_cache(force_full_reload)
+static func reload_cache():
+	GDScriptUtilities._load_native_class_cache()

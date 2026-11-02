@@ -80,13 +80,7 @@ static func get_type_name(obj) -> String:
 		obj = obj.get_script()
 	
 	if obj is GDScript:
-		if GDScriptUtilities.is_engine_version_equal_or_newer(4,3):
-			class_type_name = obj.get_global_name()
-		else:
-			for inner_script in ProjectSettings.get_global_class_list():
-				if inner_script["path"] == obj.resource_path:
-					class_type_name = inner_script["class"]
-					break
+		class_type_name = obj.get_global_name()
 		
 		if class_type_name.is_empty():
 			class_type_name = obj.get_class()
@@ -122,7 +116,7 @@ static func get_type(classname: String) -> Object:
 	
 	elif ClassDB.class_exists(classname) \
 			and ClassDB.is_class_enabled(classname) \
-			and not GDScriptUtilities.native_classes_invalid.has(classname):
+			and ClassDB.is_class_exposed(classname):
 		result = get_type_unsafe(classname)
 	
 	return result

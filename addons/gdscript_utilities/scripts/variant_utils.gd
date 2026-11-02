@@ -14,12 +14,15 @@ static var _array_types : Array[int] = [
 	TYPE_PACKED_VECTOR2_ARRAY,
 	TYPE_PACKED_VECTOR3_ARRAY,
 	TYPE_PACKED_COLOR_ARRAY,
+	TYPE_PACKED_VECTOR4_ARRAY,
 ]
 
 
 static func _static_init():
-	if TYPE_MAX > 38: # v4.3+
-		_array_types.append(38) # TYPE_PACKED_VECTOR4_ARRAY
+	# Catch new types after v4.8
+	# Append value, and name const in comment
+	if TYPE_MAX > 39:
+		pass
 
 
 ## Checks if a given type ID represents any built-in type except TYPE_OBJECT.
@@ -174,10 +177,6 @@ static func _get_typed_array_name(value : Array) -> String:
 # Used internally by ClassUtils.get_type_name
 static func _get_typed_dictionary_name(value) -> String:
 	var dictionary_name := type_string(typeof(value))
-	
-	# Before Godot v4.4
-	if GDScriptUtilities.is_engine_version_older(4,4):
-		return dictionary_name
 	
 	# Not a typed Dictionary
 	if not value.is_typed():
