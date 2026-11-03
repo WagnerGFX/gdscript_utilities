@@ -8,13 +8,11 @@ extends Node
 
 const NAME_AUTOLOAD := "GDScriptUtilities"
 const NAME_MENU_RELOADCACHE := "Reload GDScript Utilities Cache"
-const NAME_CACHE_DEFAULT_VALUE := "DefaultValue"
 
 const PATH_PLUGIN_DIRECTORY := "res://addons/gdscript_utilities"
 const PATH_PLUGIN_SETTINGS := "plugins/gdscript_utilities"
 const PATH_PLUGIN_AUTOLOAD := PATH_PLUGIN_DIRECTORY +"/scripts/gdscript_utilities.gd"
 const PATH_PLUGIN_EDITOR := PATH_PLUGIN_DIRECTORY +"/gdscript_utilities_plugin.gd"
-const PATH_PLUGIN_CACHE_FILE := PATH_PLUGIN_DIRECTORY + "/plugin_cache.tres"
 const PATH_SETTINGS_PRINT_INTERNAL_MSG := PATH_PLUGIN_SETTINGS + "/print_internal_messages"
 
 
@@ -25,10 +23,11 @@ var can_print_internal_messages: bool:
 		return ProjectSettings.get_setting(PATH_SETTINGS_PRINT_INTERNAL_MSG, true)
 
 
+var _default_value : DefaultValue
 ## Direct access to the cache. Use [member DefaultValue.instance] instead.
 var default_value : DefaultValue:
 	get:
-		return _plugin_cache.get_meta(NAME_CACHE_DEFAULT_VALUE)
+		return _default_value
 
 
 var _native_classes : Dictionary
@@ -39,19 +38,13 @@ var native_classes : Dictionary:
 		return _native_classes
 
 
-var _plugin_cache : Resource
-
-
 func _ready() -> void:
-	_load_plugin_cache()
 	_load_default_value_cache()
 	_load_native_class_cache()
 
 
 func _load_default_value_cache():
-	if not _plugin_cache.has_meta(NAME_CACHE_DEFAULT_VALUE):
-		_plugin_cache.set_meta(NAME_CACHE_DEFAULT_VALUE, DefaultValue.new())
-		ResourceSaver.save(_plugin_cache)
+	_default_value = DefaultValue.new()
 
 
 # Load a dictionary of all available native class types.
@@ -77,17 +70,6 @@ func _load_native_class_cache():
 	
 	if can_print_internal_messages:
 		print("Loaded ClassDB references [Exposed:%s, Internal:%s, Disabled:%s]" % [_native_classes.size(), internal_classes_count, disabled_classes_count])
-
-
-func _load_plugin_cache():
-	if not ResourceLoader.exists(PATH_PLUGIN_CACHE_FILE):
-		ResourceSaver.save(Resource.new(), PATH_PLUGIN_CACHE_FILE)
-		
-		if Engine.is_editor_hint():
-			var plugin_editor = load(PATH_PLUGIN_EDITOR)
-			plugin_editor.refresh_filesystem(PATH_PLUGIN_CACHE_FILE)
-	
-	_plugin_cache = load(PATH_PLUGIN_CACHE_FILE)
 
 
 ## Return true if the current engine version is equal or newer compared to the values provided

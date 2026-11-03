@@ -133,7 +133,7 @@ func assert_get_type_name():
 	assert(ClassUtils.get_type_name(Node) == "Node", assertion_item)
 	assert(ClassUtils.get_type_name(Goblin) == "Goblin", assertion_item)
 	assert(ClassUtils.get_type_name(MainScene) == "MainScene")
-	assert(ClassUtils.get_type_name(GDScriptUtilities._plugin_cache) == "Resource", assertion_item)
+	assert(ClassUtils.get_type_name(GDScriptUtilities._default_value) == "DefaultValue", assertion_item)
 	assert(ClassUtils.get_type_name(get_tree()) == "SceneTree", assertion_item)
 	assert(ClassUtils.get_type_name(TestObj.Foo) == "GDScript", assertion_item)
 	assert(ClassUtils.get_type_name(TestObj.Foo.new()) == "RefCounted", assertion_item)

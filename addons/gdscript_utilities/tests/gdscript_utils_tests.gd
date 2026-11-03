@@ -10,6 +10,7 @@ func _ready() -> void:
 
 func run_tests():
 	assert_compare_engine_versions()
+	assert_default_value()
 
 
 func assert_compare_engine_versions():
@@ -46,5 +47,21 @@ func assert_compare_engine_versions():
 	assert(GDScriptUtilities.compare_version_numbers([4]    , [3,4,1]) == 1, assertion_item)
 	assert(GDScriptUtilities.compare_version_numbers([4,5]  , [3,4,1]) == 1, assertion_item)
 	assert(GDScriptUtilities.compare_version_numbers([4,5,2], [3,4,1]) == 1, assertion_item)
+	
+	UnitTests.print_assertion_passed(assertion_item)
+
+
+func assert_default_value():
+	const assertion_item := "GDScriptUtilities.default_value"
+	
+	var test1 = DefaultValue.new()
+	var test2 = DefaultValue.new()
+	
+	assert(GDScriptUtilities.default_value == DefaultValue.instance, assertion_item)
+	assert(GDScriptUtilities.default_value is DefaultValue, assertion_item)
+	assert(DefaultValue.instance is DefaultValue, assertion_item)
+	assert(test1 is DefaultValue, assertion_item)
+	assert(test1 != DefaultValue.instance, assertion_item)
+	assert(test1 != test2, assertion_item)
 	
 	UnitTests.print_assertion_passed(assertion_item)

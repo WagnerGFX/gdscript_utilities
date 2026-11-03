@@ -5,11 +5,15 @@ extends Resource
 ##
 ## [PackedScene] files only save changed properties, default ones are evaluated only after
 ## instancing the Scene.
-## [br][br]This class is then used to represent a property default value, to differentiate
+## [br][br]
+## This class is then used to represent a property default value, to differentiate
 ## from [code]null[/code], that represents deleted property data.
-## [br][br]Do [b]NOT[/b] instantiate this class, use [member instance] instead.
-## That way, comparing default values will return [code]true[/code].
-
+## [br][br]
+## For runtime variables, use [member instance] instead of creating new instances.
+## That way, the comparison between two variables will always return [code]true[/code].
+## [br][br]
+## If you need to save the value to a file and reload it later, or need a safer
+## comparison, then use [code](value is DefaultValue)[/code].
 
 const _DISPLAY_NAME := "<default>"
 
